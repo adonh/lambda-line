@@ -315,7 +315,7 @@ Time info is only shown `display-time-mode' is non-nil"
                             :format lambda-line-elpher-mode
                             :on-activate lambda-line-elpher-activate)
     (emacs-lisp-mode        :abbrev "λ"
-                            :prefix-symbol "  ")
+                            :prefix-symbol "   ")
     (gud-mode               :prefix-symbol "  "
                             :face-prefix-active 'lambda-line-active-status-MD
                             :face-prefix-inactive 'lambda-line-inactive-status-RW
@@ -1021,7 +1021,7 @@ Optionally use another clockface font."
         (unless lambda-line-icon-time
           (if display-time-day-and-date
               (propertize (format-time-string lambda-line-time-day-and-date-format))
-            (propertize (format-time-string lambda-line-time-format ) 'face `(:height 0.9))))
+            (propertize (format-time-string lambda-line-time-format) 'face `(:height 0.9))))
         (propertize
           (format lambda-line-time-icon-format (char-to-string time-unicode)
            'display '(raise 0)))))))
