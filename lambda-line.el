@@ -1045,6 +1045,11 @@ Each section is first defined, along with a measure of the width of the status-l
 STATUS, NAME, PRIMARY, and SECONDARY are always displayed. TERTIARY is displayed only in some modes."
   (let* ((window (get-buffer-window (current-buffer)))
 
+         (name (or name ""))
+         (primary (or primary ""))
+         (tertiary (or tertiary ""))
+         (secondary (or secondary ""))
+
          (name-max-width (max 12
                               (- (window-body-width)
                                  (round (* 0.8 (length primary)))
