@@ -735,8 +735,8 @@ This is if no match could be found in `lambda-lines-mode-formats'"
     (progn
       (lambda-line--update-cache-timestamp)
       (setq lambda-line--cache-project-name
-            (file-name-nondirectory 
-             (directory-file-name 
+            (file-name-nondirectory
+             (directory-file-name
               (if (vc-root-dir) (vc-root-dir) "-")))))))
 
 (defun lambda-line-vc-project-branch ()
@@ -747,7 +747,7 @@ Otherwise show '-'."
                      lambda-line--cache-vc-backend
                    (progn
                      (lambda-line--update-cache-timestamp)
-                     (setq lambda-line--cache-vc-backend 
+                     (setq lambda-line--cache-vc-backend
                            (vc-backend buffer-file-name))))))
     (concat
      (if buffer-file-name
@@ -853,7 +853,7 @@ Otherwise show '-'."
         ;;(message "detected other in %s" line)
         (setq O (+ 1 O))
         (setq O-files (concat O-files "\n" line)))))
-      
+
     ;; construct propertized string
     (concat
      (propertize
@@ -1127,8 +1127,8 @@ STATUS, NAME, PRIMARY, and SECONDARY are always displayed. TERTIARY is displayed
 
            (propertize primary 'face face-primary)))
 
-          (tertiary (if (not (string-empty-p tertiary)) 
-                       tertiary 
+          (tertiary (if (not (string-empty-p tertiary))
+                       tertiary
                      (if lambda-line-default-tertiary-function
                          (funcall lambda-line-default-tertiary-function)
                        "")))
