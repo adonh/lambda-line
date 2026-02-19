@@ -656,6 +656,8 @@ This is if no match could be found in `lambda-lines-mode-formats'"
   "Cached git diff information for current buffer.")
 (defvar-local lambda-line--cache-timestamp nil
   "Timestamp of last cache update.")
+(defvar-local lambda-line--cache-mode-format nil
+  "Cached mode format element for current buffer.")
 
 (defcustom lambda-line-cache-duration 2.0
   "Duration in seconds to cache expensive operations."
@@ -673,17 +675,23 @@ This is if no match could be found in `lambda-lines-mode-formats'"
   (setq lambda-line--cache-project-name nil
         lambda-line--cache-vc-backend nil
         lambda-line--cache-git-diff nil
-        lambda-line--cache-timestamp nil))
+        lambda-line--cache-timestamp nil
+        lambda-line--cache-mode-format nil))
 
 (defun lambda-line--update-cache-timestamp ()
   "Update cache timestamp."
   (setq lambda-line--cache-timestamp (current-time)))
+
+(defun lambda-line--invalidate-mode-format-cache ()
+  "Invalidate the mode format element cache."
+  (setq lambda-line--cache-mode-format nil))
 
 ;; Cache invalidation hooks
 (add-hook 'after-save-hook #'lambda-line--invalidate-cache)
 (add-hook 'after-revert-hook #'lambda-line--invalidate-cache)
 (add-hook 'vc-checkin-hook #'lambda-line--invalidate-cache)
 (add-hook 'find-file-hook #'lambda-line--invalidate-cache)
+(add-hook 'after-change-major-mode-hook #'lambda-line--invalidate-mode-format-cache)
 
 ;;;;; Version Control
 ;; -------------------------------------------------------------------
@@ -2002,23 +2010,28 @@ depending on the version of mu4e."
   "Update selected window (before mode-line is active)"
   (setq lambda-line--selected-window (selected-window)))
 
+(defun lambda-line-mode--buffer-format ()
+  "Return the buffer's mode format, from cached else from searching."
+  (let* ((mode-format
+           (or lambda-line--cache-mode-format
+             (let ((found
+                     (catch 'found
+                       (dolist (elt lambda-line-mode-formats)
+                         (let ((mode-p (plist-get (cdr elt) :mode-p)))
+                           (when (and mode-p (functionp mode-p))
+                             (when (funcall mode-p)
+                               (throw 'found elt))))))))
+               (setq-local lambda-line--cache-mode-format found)
+               found)))
+         (config (cdr mode-format))
+         (format-fn (if config
+                     (plist-get config :format)
+                   lambda-line-default-mode-format)))
+    (funcall format-fn mode-format)))
+
 (defun lambda-line ()
   "Build and set the modeline."
-  (let* ((caught nil)
-         (format
-          '((:eval
-             (funcall
-              (or (catch 'found
-                    (dolist (elt lambda-line-mode-formats)
-                      (let* ((config (cdr elt))
-                             (mode-p (plist-get config :mode-p))
-                             (format (plist-get config :format)))
-                        (when (and mode-p (functionp mode-p))
-                          (when (funcall mode-p)
-                            (setq caught elt)
-                            (throw 'found format))))))
-                  lambda-line-default-mode-format)
-              caught)))))
+  (let* ((format '(:eval (lambda-line-mode--buffer-format))))
     (if (eq lambda-line-position 'top)
         (progn
           (setq header-line-format format)
