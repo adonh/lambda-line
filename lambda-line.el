@@ -284,7 +284,7 @@ Time info is only shown `display-time-mode' is non-nil"
                             :always-modifiable t)
     (shell-mode             :mode-p lambda-line-shell-mode-p
                             :format lambda-line-shell-mode
-                            :prefix-symbol "  "
+                            :prefix-symbol " >"
                             :name "Shell"
                             :face-prefix-active 'lambda-line-active-status-MD
                             :face-prefix-inactive 'lambda-line-inactive-status-RW
@@ -300,11 +300,12 @@ Time info is only shown `display-time-mode' is non-nil"
     (completion-list-mode   :mode-p lambda-line-completion-list-mode-p
                             :format lambda-line-completion-list-mode)
     (deft-mode              :mode-p lambda-line-deft-mode-p
-                            :format lambda-line-deft-mode)
+                            :format lambda-line-deft-mode
+                            :prefix-symbol " DEFT ")
     (dired-mode             :mode-p lambda-line-dired-mode-p
                             :mode-p lambda-line-dired-mode
                             :abbrev "Dir"
-                            :prefix-symbol "    ")
+                            :prefix-symbol " 📂")
     (doc-view-mode          :mode-p lambda-line-doc-view-mode-p
                             :format lambda-line-doc-view-mode)
     (elfeed-search-mode     :mode-p lambda-line-elfeed-search-mode-p
@@ -319,8 +320,8 @@ Time info is only shown `display-time-mode' is non-nil"
                             :format lambda-line-elpher-mode
                             :on-activate lambda-line-elpher-activate)
     (emacs-lisp-mode        :abbrev "λ"
-                            :prefix-symbol "   ")
-    (gud-mode               :prefix-symbol "  "
+                            :prefix-symbol " λ")
+    (gud-mode               :prefix-symbol " 🐞"
                             :face-prefix-active 'lambda-line-active-status-MD
                             :face-prefix-inactive 'lambda-line-inactive-status-RW
                             :always-modifiable t)
@@ -347,14 +348,14 @@ Time info is only shown `display-time-mode' is non-nil"
                             :face-prefix-inactive 'lambda-line-inactive-status-RW
                             :always-modifiable t)
     (lisp-interaction-mode  :abbrev "λΙ"
-                            :prefix-symbol " λ "
+                            :prefix-symbol " λΙ"
                             :always-modifiable t)
     (magit-mode             :mode-p lambda-line-magit-mode-p
                             :format lambda-line-magit-mode
                             :abbrev "MG"
-                            :prefix-symbol "   ")
+                            :prefix-symbol " ✨")
     (markdown-mode          :abbrev "MD"
-                            :prefix-symbol "  ")
+                            :prefix-symbol " M↓")
     (mu4e-compose-mode      :mode-p lambda-line-mu4e-compose-mode-p
                             :format lambda-line-mu4e-compose-mode)
     (mu4e-headers-mode      :mode-p lambda-line-mu4e-headers-mode-p
