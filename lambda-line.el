@@ -658,7 +658,7 @@ This is if no match could be found in `lambda-lines-mode-formats'"
 (defvar-local lambda-line--cache-timestamp nil
   "Timestamp of last cache update.")
 (defvar-local lambda-line--cache-mode-format nil
-  "Cached mode format element for current buffer.")
+  "Cached mode-format element for current buffer.")
 
 (defcustom lambda-line-cache-duration 2.0
   "Duration in seconds to cache expensive operations."
@@ -684,7 +684,7 @@ This is if no match could be found in `lambda-lines-mode-formats'"
   (setq lambda-line--cache-timestamp (current-time)))
 
 (defun lambda-line--invalidate-mode-format-cache ()
-  "Invalidate the mode format element cache."
+  "Invalidate the mode-format element cache."
   (setq lambda-line--cache-mode-format nil))
 
 ;; Cache invalidation hooks
@@ -1029,7 +1029,7 @@ Optionally use another clockface font."
 ;;;;; Status
 (defun lambda-line-status (mode-format)
   "Return buffer status, one of 'read-only, 'modified or 'read-write.
-FORMAT is the buffer's mode format."
+MODE-FORMAT is the buffer's mode format pair."
 
   (let ((read-only  (when (not (plist-get (cdr mode-format) :always-modifiable))
                       buffer-read-only))
@@ -1076,7 +1076,7 @@ FORMAT is the buffer's mode format."
 ;;   - right: tertiary + secondary + hspace
 ;;
 (defun lambda-line-compose (mode-format status name primary tertiary secondary &optional prefix)
-  "Compose a string with provided information. FORMAT is the mode format caller.
+  "Compose a string with provided information. MODE-FORMAT is the mode format pair.
 Each section is first defined, along with a measure of the width of the status-line.
 STATUS, NAME, PRIMARY, and SECONDARY are always displayed. TERTIARY is displayed only in some modes."
   (let* ((window (get-buffer-window (current-buffer)))
@@ -1548,14 +1548,14 @@ STATUS, NAME, PRIMARY, and SECONDARY are always displayed. TERTIARY is displayed
   (derived-mode-p 'deft-mode))
 
 (defun lambda-line-deft-mode (mode-format)
-  (let ((prefix " DEFT ")
+  (let ((status " DEFT ")
         (primary "Search:")
         (filter  (if deft-filter-regexp
                      (deft-whole-filter-regexp) "<filter>"))
         (matches (if deft-filter-regexp
                      (format "%d matches" (length deft-current-files))
                    (format "%d notes" (length deft-all-files)))))
-    (lambda-line-compose mode-format prefix primary filter nil matches)))
+    (lambda-line-compose mode-format status primary filter nil matches)))
 
 ;;;; Dired Mode
 
