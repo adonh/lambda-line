@@ -2069,16 +2069,17 @@ depending on the version of mu4e."
              (let ((found
                      (catch 'found
                        (dolist (elt lambda-line-mode-formats)
-                         (let ((mode-p (plist-get (cdr elt) :mode-p)))
-                           (when (and mode-p (functionp mode-p))
-                             (when (funcall mode-p)
+                         (let ((mode (car elt)))
+                           (let ((mode-p (plist-get (cdr elt) :mode-p)))
+                             (when (if (functionp mode-p)
+                                       (funcall mode-p)
+                                     (derived-mode-p mode))
                                (throw 'found elt))))))))
                (setq-local lambda-line--cache-mode-format found)
                found)))
          (config (cdr mode-format))
-         (format-fn (if config
-                     (plist-get config :format)
-                   lambda-line-default-mode-format)))
+         (format-fn (or (plist-get config :format)
+                        lambda-line-default-mode-format)))
     (funcall format-fn mode-format)))
 
 (defun lambda-line ()
