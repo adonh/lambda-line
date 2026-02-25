@@ -303,7 +303,7 @@ Time info is only shown `display-time-mode' is non-nil"
                             :format lambda-line-deft-mode
                             :prefix-symbol " DEFT ")
     (dired-mode             :mode-p lambda-line-dired-mode-p
-                            :mode-p lambda-line-dired-mode
+                            :format lambda-line-dired-mode
                             :abbrev "Dir"
                             :prefix-symbol " 📂")
     (doc-view-mode          :mode-p lambda-line-doc-view-mode-p
